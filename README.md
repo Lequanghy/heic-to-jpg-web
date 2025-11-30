@@ -12,7 +12,7 @@ Live demo → just run it locally in 10 seconds!
 - 95 % JPEG quality by default (customizable)
 
 ## 1. Clone or download this repo
-git clone https://github.com/yourusername/heic-to-jpg-web.git
+git clone https://github.com/Lequanghy/heic-to-jpg-web.git
 cd heic-to-jpg-web
 
 ## 2. Install dependencies
