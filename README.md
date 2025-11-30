@@ -1,25 +1,23 @@
-HEIC to JPG Converter – Instant Web App
-Free • No ads • No uploads to third-party servers • Works offline-capable
-A beautiful, blazing-fast web tool that converts .HEIC / .HEIF photos (iPhone, iPad) to .JPG instantly in your browser.
+# HEIC to JPG Converter – Instant Web App
+A beautiful, blazing-fast web tool that converts .HEIC / .HEIF photos (iPhone, iPad) to .JPG instantly in your browser.\
 Live demo → just run it locally in 10 seconds!
-Features
+### Features
 
-Drag & drop or click to upload (multiple files supported)
-Instant conversion using Pillow + pillow-heif
-Zero server storage – files are processed in memory and never saved
-Responsive, mobile-friendly UI with Tailwind CSS
-Progress bar + individual download buttons
-Single-file FastAPI app (super easy to deploy)
-95 % JPEG quality by default (customizable)
+- Drag & drop or click to upload (multiple files supported)
+- Instant conversion using Pillow + pillow-heif
+- Zero server storage – files are processed in memory and never saved
+- Responsive, mobile-friendly UI with Tailwind CSS
+- Progress bar + individual download buttons
+- Single-file FastAPI app (super easy to deploy)
+- 95 % JPEG quality by default (customizable)
 
-Quick Start (10 seconds)
-Bash# 1. Clone or download this repo
+## 1. Clone or download this repo
 git clone https://github.com/yourusername/heic-to-jpg-web.git
 cd heic-to-jpg-web
 
-# 2. Install dependencies
+## 2. Install dependencies
 pip install fastapi uvicorn pillow pillow-heif python-multipart
 
-# 3. Run the app
+## 3. Run the app
 python main.py
 Open http://localhost:8000 in your browser — done!
