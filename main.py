@@ -78,7 +78,7 @@ async def home():
         fileInput.addEventListener('change', () => handleFiles(fileInput.files));
 
         async function handleFiles(files) {
-          const heicFiles = Array.from(files).filter(f => /\.(heic|heif)$/i.test(f.name));
+          const heicFiles = Array.from(files).filter(f => /.(heic|heif)$/i.test(f.name));
           if (heicFiles.length === 0) {
             alert("No HEIC/HEIF files found!");
             return;
@@ -130,7 +130,7 @@ async def home():
 
 @app.post("/convert")
 async def convert_heic(file: UploadFile = File(...)):
-    if not file.filename.lower().endswith(('.heic', '.heif')):
+    if not file.filename.lower().endswith(('.heic', '.heif')): # type: ignore
         return {"error": "Only HEIC/HEIF files allowed"}
 
     contents = await file.read()
@@ -145,7 +145,7 @@ async def convert_heic(file: UploadFile = File(...)):
     image.save(img_io, format='JPEG', quality=95, optimize=True)
     img_io.seek(0)
 
-    new_filename = Path(file.filename).stem + ".jpg"
+    new_filename = Path(file.filename).stem + ".jpg" # type: ignore
 
     return StreamingResponse(img_io, media_type="image/jpeg",
                            headers={"Content-Disposition": f"attachment; filename={new_filename}"})
