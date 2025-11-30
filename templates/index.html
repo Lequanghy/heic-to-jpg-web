@@ -62,6 +62,10 @@
       const progressBar = document.getElementById("progressBar");
       const results = document.getElementById("results");
 
+      // PREVENT BROWSER FROM OPENING/DOWNLOADING THE DROPPED FILE
+      dropZone.addEventListener("dragover", (e) => e.preventDefault(), false);
+      dropZone.addEventListener("drop", (e) => e.preventDefault(), false);
+
       ["dragover", "dragenter"].forEach((e) => {
         dropZone.addEventListener(e, () =>
           dropZone.classList.add("border-purple-600", "bg-purple-50")
