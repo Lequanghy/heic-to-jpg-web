@@ -11,49 +11,73 @@
     />
   </head>
   <body
-    class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen flex items-center justify-center p-4"
+    class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen flex p-4 flex flex-col"
   >
-    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
-      <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
-        HEIC to JPG Converter
-      </h1>
-      <p class="text-center text-gray-600 mb-8">
-        Free, instant, no upload limits
-      </p>
+    <main class="flex-1 flex items-center justify-center">
+      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
+          Convert HEIC to JPG
+        </h1>
+        <p class="text-center text-gray-600 mb-8">
+          Free, instant, no upload limits
+        </p>
 
-      <form id="uploadForm" class="space-y-6">
-        <div
-          id="dropZone"
-          class="border-4 border-dashed border-purple-300 rounded-xl p-12 text-center cursor-pointer hover:border-purple-500 transition"
-        >
-          <i class="fas fa-cloud-upload-alt text-6xl text-purple-400 mb-4"></i>
-          <p class="text-xl text-gray-700">
-            Drop HEIC files here or click to browse
-          </p>
-          <input
-            type="file"
-            name="files"
-            id="fileInput"
-            multiple
-            accept=".heic,.HEIC,.heif,.HEIF"
-            class="hidden"
-          />
-        </div>
-
-        <div id="progress" class="hidden">
-          <div class="text-sm text-gray-600 mb-2">Converting...</div>
-          <div class="w-full bg-gray-200 rounded-full h-3">
-            <div
-              id="progressBar"
-              class="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all"
-              style="width: 0%"
-            ></div>
+        <form id="uploadForm" class="space-y-6">
+          <div
+            id="dropZone"
+            class="border-4 border-dashed border-purple-300 rounded-xl p-12 text-center cursor-pointer hover:border-purple-500 transition"
+          >
+            <i
+              class="fas fa-cloud-upload-alt text-6xl text-purple-400 mb-4"
+            ></i>
+            <p class="text-xl text-gray-700">
+              Drop HEIC files here or click to browse
+            </p>
+            <input
+              type="file"
+              name="files"
+              id="fileInput"
+              multiple
+              accept=".heic,.HEIC,.heif,.HEIF"
+              class="hidden"
+            />
           </div>
-        </div>
 
-        <div id="results" class="space-y-3"></div>
-      </form>
-    </div>
+          <div id="progress" class="hidden">
+            <div class="text-sm text-gray-600 mb-2">Converting...</div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div
+                id="progressBar"
+                class="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div id="results" class="space-y-3"></div>
+        </form>
+      </div>
+    </main>
+
+    <footer
+      class="relative z-20 py-5 border-t border-gray-200 bg-white/70 backdrop-blur-sm w-full"
+    >
+      <div class="flex items-center justify-center gap-3 text-gray-600">
+        <span class="text-sm font-medium"
+          >Crafted by
+          <span class="font-bold text-indigo-600">Le Quang Hy</span></span
+        >
+        <span class="text-gray-400">•</span>
+        <a
+          href="https://github.com/Lequanghy/heic-to-jpg-web"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition group"
+        >
+          <i class="fab fa-github text-xl group-hover:scale-110 transition"></i>
+        </a>
+      </div>
+    </footer>
 
     <script>
       const dropZone = document.getElementById("dropZone");
