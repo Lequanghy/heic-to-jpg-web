@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HEIC → JPG Converter</title>
+    <title id="title">HEIC → JPG Converter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -15,7 +15,7 @@
   >
     <main class="flex-1 flex items-center justify-center">
       <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-center mb-4">
           <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
             Convert HEIC to&nbsp;
           </h1>
@@ -26,7 +26,7 @@
               id="dropdownButton"
               class="inline-flex justify-between w-48 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-4xl font-bold text-gray-800 hover:bg-gray-50 focus:outline-none"
             >
-              <span id="selectedValue">JPG</span>
+              <span id="selectedNewFormat">JPG</span>
 
               <svg
                 class="h-5 w-5 ml-2"
@@ -165,7 +165,8 @@
     <script>
       const btn = document.getElementById("dropdownButton");
       const menu = document.getElementById("dropdownMenu");
-      const selectedValue = document.getElementById("selectedValue");
+      const selectedNewFormat = document.getElementById("selectedNewFormat");
+      const title = document.getElementById("title");
 
       btn.addEventListener("click", () => {
         menu.classList.toggle("hidden");
@@ -174,20 +175,19 @@
       // When an option is clicked
       document.querySelectorAll(".option").forEach((option) => {
         option.addEventListener("click", () => {
-          selectedValue.textContent = option.dataset.value; // display selected
+          selectedNewFormat.textContent = option.dataset.value; // display selected
           menu.classList.add("hidden"); // close menu
+          title.textContent = `HEIC → ${option.dataset.value} Converter`;
         });
       });
 
-      // Optional: close if clicking outside
+      // close if clicking outside
       document.addEventListener("click", (e) => {
         if (!btn.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.add("hidden");
         }
       });
-    </script>
 
-    <script>
       const dropZone = document.getElementById("dropZone");
       const fileInput = document.getElementById("fileInput");
       const progress = document.getElementById("progress");
@@ -222,6 +222,9 @@
         const heicFiles = Array.from(files).filter((f) =>
           /.(heic|heif)$/i.test(f.name)
         );
+        const selectedNewFormat = document.getElementById("selectedNewFormat");
+        const newFormat = selectedNewFormat.textContent.toLowerCase();
+
         if (heicFiles.length === 0) {
           alert("No HEIC/HEIF files found!");
           return;
@@ -234,7 +237,7 @@
         for (const file of heicFiles) {
           const formData = new FormData();
           formData.append("file", file);
-
+          formData.append("format", newFormat);
           try {
             const res = await fetch("/convert", {
               method: "POST",
@@ -250,10 +253,10 @@
             div.innerHTML = `
                 <span class="font-medium text-green-800">${
                   file.name
-                } → ${file.name.replace(/\.hei[c|f]/i, ".jpg")}</span>
+                } → ${file.name.replace(/\.hei[c|f]/i, "." + newFormat)}</span>
                 <a href="${url}" download="${file.name.replace(
               /\.hei[c|f]/i,
-              ".jpg"
+              "." + newFormat
             )}"
                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition">
                   Download
