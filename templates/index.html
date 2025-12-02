@@ -14,10 +14,93 @@
     class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen flex p-4 flex flex-col"
   >
     <main class="flex-1 flex items-center justify-center">
-      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
-          Convert HEIC to JPG
-        </h1>
+      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
+            Convert HEIC to&nbsp;
+          </h1>
+
+          <div class="relative inline-block text-left mb-1">
+            <!-- Button displaying the selected value -->
+            <button
+              id="dropdownButton"
+              class="inline-flex justify-between w-48 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-4xl font-bold text-gray-800 hover:bg-gray-50 focus:outline-none"
+            >
+              <span id="selectedValue">JPG</span>
+
+              <svg
+                class="h-5 w-5 ml-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div
+              id="dropdownMenu"
+              class="hidden absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+            >
+              <div class="py-1">
+                <button
+                  data-value="JPG"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">JPG</div>
+                    <div class="text-xs text-gray-500">
+                      Best compatibility · 95% quality
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  data-value="PNG"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">PNG</div>
+                    <div class="text-xs text-gray-500">
+                      Lossless · Transparent support
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  data-value="AVIF"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">AVIF</div>
+                    <div class="text-xs text-gray-500">
+                      Next-gen · Best compression (2025)
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  data-value="WebP"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">WebP</div>
+                    <div class="text-xs text-gray-500">
+                      Smallest size · Modern browsers
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         <p class="text-center text-gray-600 mb-8">
           Free, instant, no upload limits
         </p>
@@ -78,6 +161,31 @@
         </a>
       </div>
     </footer>
+
+    <script>
+      const btn = document.getElementById("dropdownButton");
+      const menu = document.getElementById("dropdownMenu");
+      const selectedValue = document.getElementById("selectedValue");
+
+      btn.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+
+      // When an option is clicked
+      document.querySelectorAll(".option").forEach((option) => {
+        option.addEventListener("click", () => {
+          selectedValue.textContent = option.dataset.value; // display selected
+          menu.classList.add("hidden"); // close menu
+        });
+      });
+
+      // Optional: close if clicking outside
+      document.addEventListener("click", (e) => {
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          menu.classList.add("hidden");
+        }
+      });
+    </script>
 
     <script>
       const dropZone = document.getElementById("dropZone");
