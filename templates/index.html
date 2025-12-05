@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="title">HEIC → JPG Converter</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       rel="stylesheet"
@@ -136,7 +137,17 @@
               ></div>
             </div>
           </div>
-
+          <div
+            id="downloadAll"
+            class="space-y-3 flex justify-center w-full hidden"
+          >
+            <a
+              id="downloadAllLink"
+              class="px-10 py-3 w-full bg-green-600 text-white text-center rounded-xl hover:bg-green-700"
+            >
+              Download All
+            </a>
+          </div>
           <div id="results" class="space-y-3"></div>
         </form>
       </div>
@@ -193,6 +204,7 @@
       const progress = document.getElementById("progress");
       const progressBar = document.getElementById("progressBar");
       const results = document.getElementById("results");
+      const downloadAll = document.getElementById("downloadAll");
 
       // PREVENT BROWSER FROM OPENING/DOWNLOADING THE DROPPED FILE
       dropZone.addEventListener("dragover", (e) => e.preventDefault(), false);
@@ -230,50 +242,84 @@
           return;
         }
 
-        progress.classList.remove("hidden");
-        results.innerHTML = "";
-        let completed = 0;
+        // Count the number of uploaded files
+        window.convertedFiles = [];
+        window.totalFilesToConvert = heicFiles.length;
+        document.getElementById("results").innerHTML = ""; // Clear old results
 
-        for (const file of heicFiles) {
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("format", newFormat);
-          try {
-            const res = await fetch("/convert", {
-              method: "POST",
-              body: formData,
-            });
+        heicFiles.forEach((file) => convertAndDownload(file, newFormat));
+      }
 
-            const blob = await res.blob();
-            const url = URL.createObjectURL(blob);
+      async function convertAndDownload(file, format = "jpg") {
+        downloadAll.classList.add("hidden");
+        const resultDiv = document.createElement("div");
+        resultDiv.className =
+          "bg-white rounded-2xl shadow-md p-6 flex items-center justify-between animate-fade-in";
+        resultDiv.innerHTML = `
+                 <div class="flex items-center space-x-5">
+                   <i class="fa-solid fa-image text-5xl text-gray-400"></i>
+                   <div>
+                     <p class="font-bold text-lg">${file.name}</p>
+                     <p class="text-sm text-gray-600">Converting to <strong>${format.toUpperCase()}</strong>...</p>
+                   </div>
+                 </div>
+                 <i class="fa-solid fa-spinner fa-spin text-3xl text-indigo-600"></i>
+               `;
+        document.getElementById("results").prepend(resultDiv);
 
-            const div = document.createElement("div");
-            div.className =
-              "flex items-center justify-between bg-green-50 p-4 rounded-lg border border-green-200";
-            div.innerHTML = `
-                <span class="font-medium text-green-800">${
-                  file.name
-                } → ${file.name.replace(/\.hei[c|f]/i, "." + newFormat)}</span>
-                <a href="${url}" download="${file.name.replace(
-              /\.hei[c|f]/i,
-              "." + newFormat
-            )}"
-                   class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg transition">
-                  Download
-                </a>
-              `;
-            results.appendChild(div);
+        const form = new FormData();
+        form.append("file", file);
+        form.append("format", format);
 
-            completed++;
-            progressBar.style.width =
-              (completed / heicFiles.length) * 100 + "%";
-          } catch (err) {
-            results.innerHTML += `<div class="text-red-600">Failed: ${file.name}</div>`;
-          }
+        try {
+          const res = await fetch("/convert", { method: "POST", body: form });
+          if (!res.ok) throw new Error("Failed");
+
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const newName = file.name.replace(
+            /\.(heic|heif)$/i,
+            `.${format === "jpg" ? "jpg" : format}`
+          );
+
+          // Store for ZIP later
+          window.convertedFiles = window.convertedFiles || [];
+          window.convertedFiles.push({ name: newName, blob, url });
+
+          // Success UI
+          resultDiv.innerHTML = `
+               <div class="flex items-center space-x-5">
+                 <i class="fa-solid fa-check-circle text-5xl text-green-600"></i>
+                 <div>
+                   <p class="font-bold text-lg">${newName}</p>
+                   <p class="text-sm text-green-600">Ready!</p>
+                 </div>
+               </div>
+               <a href="${url}" download="${newName}" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700">
+                 Download
+               </a>
+             `;
+        } catch (err) {
+          resultDiv.innerHTML = `<p class="text-red-600 font-bold">Failed: ${err.message}</p>`;
         }
 
-        if (completed === heicFiles.length) {
-          setTimeout(() => progress.classList.add("hidden"), 1000);
+        try {
+          const downloadAll = document.getElementById("downloadAll");
+          const a = document.getElementById("downloadAllLink");
+
+          if (window.convertedFiles.length > 1) {
+            downloadAll.classList.remove("hidden");
+            const zipFile = new JSZip();
+            window.convertedFiles.forEach((f) => zipFile.file(f.name, f.blob));
+            const zipBlob = await zipFile.generateAsync({ type: "blob" });
+            const zipUrl = URL.createObjectURL(zipBlob);
+            a.href = zipUrl;
+            a.download = `heic-converted-${new Date()
+              .toISOString()
+              .slice(0, 10)}.zip`;
+          }
+        } catch (err) {
+          downloadAll.innerHTML = `<p class="text-red-600 font-bold">Failed: ${err.message}</p>`;
         }
       }
     </script>

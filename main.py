@@ -47,13 +47,6 @@ async def convert_heic(file: UploadFile = File(...),format: str = Form("jpg")):
 
     # Save to bytes
     img_io = io.BytesIO()
-    # image.save(img_io, format='JPEG', quality=95, optimize=True)
-    # img_io.seek(0)
-
-    # new_filename = Path(file.filename).stem + "." + format # type: ignore
-
-    # return StreamingResponse(img_io, media_type="image/jpeg",
-    #                        headers={"Content-Disposition": f"attachment; filename={new_filename}"})
     save_params = {}
     pil_format = "JPEG"
 
