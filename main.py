@@ -1,5 +1,5 @@
 # main.py
-from fastapi import FastAPI, File, UploadFile, Form, Request
+from fastapi import FastAPI, File, HTTPException, UploadFile, Form, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -24,9 +24,17 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/convert")
-async def convert_heic(file: UploadFile = File(...),format: str = Form("jpg")):
-    if not file.filename.lower().endswith(('.heic', '.heif')): # type: ignore
-        return {"error": "Only HEIC/HEIF files allowed"}
+async def convert_heic(file: UploadFile = File(...),format: str = Form("jpg"), fromFormat: list[str] = []):
+    fromFormat = fromFormat[0].split(',')
+    fromFormatTuple = tuple(fromFormat)
+    fromFormatStr = ', '.join(fromFormat)
+    if not file.filename.lower().endswith(fromFormatTuple): # type: ignore
+        raise HTTPException(
+            status_code=400,  # Bad Request
+            detail="Only "+ fromFormatStr +" files are allowed"
+        )
+    else:
+        print(fromFormatStr)
     
     contents = await file.read()
     image = Image.open(io.BytesIO(contents))
@@ -73,7 +81,7 @@ async def convert_heic(file: UploadFile = File(...),format: str = Form("jpg")):
     stem = Path(file.filename).stem # type: ignore
     ext = "jpg" if format == "jpg" else format
     new_filename = f"{stem}.{ext}"
-
+    print('completed /convert')
     return StreamingResponse(
         img_io,
         media_type=f"image/{'jpeg' if format=='jpg' else format}",

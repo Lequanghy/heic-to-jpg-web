@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="title">HEIC → JPG Converter</title>
+    <title id="title">HEIC to JPG Converter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
     <link
@@ -18,16 +18,16 @@
       <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl">
         <div class="flex items-center justify-center mb-4">
           <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
-            Convert HEIC to&nbsp;
+            Convert&nbsp;
           </h1>
 
           <div class="relative inline-block text-left mb-1">
             <!-- Button displaying the selected value -->
             <button
-              id="dropdownButton"
+              id="fromDropdownButton"
               class="inline-flex justify-between w-48 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-4xl font-bold text-gray-800 hover:bg-gray-50 focus:outline-none"
             >
-              <span id="selectedNewFormat">JPG</span>
+              <span id="selectedFromFormat">HEIC</span>
 
               <svg
                 class="h-5 w-5 ml-2"
@@ -47,10 +47,21 @@
 
             <!-- Dropdown menu -->
             <div
-              id="dropdownMenu"
+              id="fromDropdownMenu"
               class="hidden absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
             >
               <div class="py-1">
+                <button
+                  data-value="HEIC"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">HEIC</div>
+                    <div class="text-xs text-gray-500">
+                      High Efficiency Image Container
+                    </div>
+                  </div>
+                </button>
                 <button
                   data-value="JPG"
                   class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -82,7 +93,103 @@
                   <div>
                     <div class="font-medium">AVIF</div>
                     <div class="text-xs text-gray-500">
-                      Next-gen · Best compression (2025)
+                      Next-gen · Best compression
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  data-value="WebP"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">WebP</div>
+                    <div class="text-xs text-gray-500">
+                      Smallest size · Modern browsers
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">
+            &nbsp;to&nbsp;
+          </h1>
+
+          <div class="relative inline-block text-left mb-1">
+            <!-- Button displaying the selected value -->
+            <button
+              id="toDropdownButton"
+              class="inline-flex justify-between w-48 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-4xl font-bold text-gray-800 hover:bg-gray-50 focus:outline-none"
+            >
+              <span id="selectedNewFormat">JPG</span>
+
+              <svg
+                class="h-5 w-5 ml-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div
+              id="toDropdownMenu"
+              class="hidden absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+            >
+              <div class="py-1">
+                <button
+                  data-value="HEIC"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">HEIC</div>
+                    <div class="text-xs text-gray-500">
+                      High Efficiency Image Container
+                    </div>
+                  </div>
+                </button>
+                <button
+                  data-value="JPG"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">JPG</div>
+                    <div class="text-xs text-gray-500">
+                      Best compatibility · 95% quality
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  data-value="PNG"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">PNG</div>
+                    <div class="text-xs text-gray-500">
+                      Lossless · Transparent support
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  data-value="AVIF"
+                  class="option block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div>
+                    <div class="font-medium">AVIF</div>
+                    <div class="text-xs text-gray-500">
+                      Next-gen · Best compression
                     </div>
                   </div>
                 </button>
@@ -114,7 +221,7 @@
             <i
               class="fas fa-cloud-upload-alt text-6xl text-purple-400 mb-4"
             ></i>
-            <p class="text-xl text-gray-700">
+            <p id="dropZoneText" class="text-xl text-gray-700">
               Drop HEIC files here or click to browse
             </p>
             <input
@@ -174,21 +281,43 @@
     </footer>
 
     <script>
-      const btn = document.getElementById("dropdownButton");
-      const menu = document.getElementById("dropdownMenu");
+      const btn = document.getElementById("toDropdownButton");
+      const menu = document.getElementById("toDropdownMenu");
       const selectedNewFormat = document.getElementById("selectedNewFormat");
+      const fromDropdownButton = document.getElementById("fromDropdownButton");
+      const fromDropdownMenu = document.getElementById("fromDropdownMenu");
+      const selectedFromFormat = document.getElementById("selectedFromFormat");
       const title = document.getElementById("title");
+      const dropZoneText = document.getElementById("dropZoneText");
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const progress = document.getElementById("progress");
+      const progressBar = document.getElementById("progressBar");
+      const results = document.getElementById("results");
+      const downloadAll = document.getElementById("downloadAll");
+      let acceptList = [];
+      const mapFormat = {
+        jpg: [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi"],
+        png: [".png"],
+        webp: [".webp"],
+        avif: [".avif"],
+        heic: [".heic", ".heif"],
+        heif: [".heif", ".heic"],
+        gif: [".gif"],
+        tiff: [".tiff", ".tif"],
+      };
 
       btn.addEventListener("click", () => {
         menu.classList.toggle("hidden");
       });
 
       // When an option is clicked
-      document.querySelectorAll(".option").forEach((option) => {
+      document.querySelectorAll("#toDropdownMenu .option").forEach((option) => {
         option.addEventListener("click", () => {
           selectedNewFormat.textContent = option.dataset.value; // display selected
           menu.classList.add("hidden"); // close menu
-          title.textContent = `HEIC → ${option.dataset.value} Converter`;
+          const selectedFromFormatText = selectedFromFormat.textContent;
+          title.textContent = `${selectedFromFormatText} to ${option.dataset.value} Converter`;
         });
       });
 
@@ -196,15 +325,34 @@
       document.addEventListener("click", (e) => {
         if (!btn.contains(e.target) && !menu.contains(e.target)) {
           menu.classList.add("hidden");
+        } else if (
+          !fromDropdownButton.contains(e.target) &&
+          !fromDropdownMenu.contains(e.target)
+        ) {
+          fromDropdownMenu.classList.add("hidden");
         }
       });
 
-      const dropZone = document.getElementById("dropZone");
-      const fileInput = document.getElementById("fileInput");
-      const progress = document.getElementById("progress");
-      const progressBar = document.getElementById("progressBar");
-      const results = document.getElementById("results");
-      const downloadAll = document.getElementById("downloadAll");
+      fromDropdownButton.addEventListener("click", () => {
+        fromDropdownMenu.classList.toggle("hidden");
+      });
+
+      // When an option is clicked
+      document
+        .querySelectorAll("#fromDropdownMenu .option")
+        .forEach((option) => {
+          option.addEventListener("click", () => {
+            format = option.dataset.value;
+            selectedFromFormat.textContent = format; // display selected
+            fromDropdownMenu.classList.add("hidden"); // close menu
+            const selectedNewFormatText = selectedNewFormat.textContent;
+            title.textContent = `${format} to ${selectedNewFormatText} Converter`;
+            dropZoneText.textContent = `Drop ${format} files here or click to browse`;
+            // Update the accept attribute
+            acceptList = mapFormat[format.toLowerCase()] || ["image/*"];
+            fileInput.setAttribute("accept", acceptList.join(","));
+          });
+        });
 
       // PREVENT BROWSER FROM OPENING/DOWNLOADING THE DROPPED FILE
       dropZone.addEventListener("dragover", (e) => e.preventDefault(), false);
@@ -231,14 +379,26 @@
       fileInput.addEventListener("change", () => handleFiles(fileInput.files));
 
       async function handleFiles(files) {
+        const fromDropdownValue = fromDropdownButton.textContent.toUpperCase();
+
+        fromFormat = selectedFromFormat.textContent;
+        acceptList = mapFormat[fromFormat.toLowerCase()] || [".heic", ".heif"];
+        // Build a regex pattern from the accept list
+        // strip any leading dots
+        const extArray = acceptList.map((e) => e.replace(/^\./, ""));
+        console.log(acceptList);
+        const pattern = extArray.join("|");
+        const sourceExtRegex = new RegExp(`\\.(${pattern})$`, "i");
+        console.log("extension pattern:", pattern);
         const heicFiles = Array.from(files).filter((f) =>
-          /.(heic|heif)$/i.test(f.name)
+          sourceExtRegex.test(f.name)
         );
+        console.log("filenames:", heicFiles);
         const selectedNewFormat = document.getElementById("selectedNewFormat");
         const newFormat = selectedNewFormat.textContent.toLowerCase();
 
         if (heicFiles.length === 0) {
-          alert("No HEIC/HEIF files found!");
+          alert(`No ${fromDropdownValue} files found!`);
           return;
         }
 
@@ -247,10 +407,17 @@
         window.totalFilesToConvert = heicFiles.length;
         document.getElementById("results").innerHTML = ""; // Clear old results
 
-        heicFiles.forEach((file) => convertAndDownload(file, newFormat));
+        heicFiles.forEach((file) =>
+          convertAndDownload(file, newFormat, sourceExtRegex, acceptList)
+        );
       }
 
-      async function convertAndDownload(file, format = "jpg") {
+      async function convertAndDownload(
+        file,
+        format = "jpg",
+        sourceExtRegex = /\.(heic|heif)$/i,
+        acceptList = [".heic", ".heif"]
+      ) {
         downloadAll.classList.add("hidden");
         const resultDiv = document.createElement("div");
         resultDiv.className =
@@ -270,15 +437,18 @@
         const form = new FormData();
         form.append("file", file);
         form.append("format", format);
-
+        form.append("fromFormat", acceptList);
         try {
           const res = await fetch("/convert", { method: "POST", body: form });
-          if (!res.ok) throw new Error("Failed");
-
+          console.log(res);
+          if (!res.ok) {
+            detail = await res.text();
+            throw new Error(`HTTP ${res.status} ${res.statusText}: ${detail}`);
+          }
           const blob = await res.blob();
           const url = URL.createObjectURL(blob);
           const newName = file.name.replace(
-            /\.(heic|heif)$/i,
+            sourceExtRegex,
             `.${format === "jpg" ? "jpg" : format}`
           );
 
