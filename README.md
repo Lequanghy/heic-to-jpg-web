@@ -1,8 +1,9 @@
 # HEIC to JPG Converter – Instant Web App
-A beautiful, blazing-fast web tool that converts .HEIC / .HEIF photos (iPhone, iPad) to .JPG instantly in your browser.\
+A beautiful, blazing-fast web tool that converts selected picture format(.HEIC / .HEIF) to desired picture format (.JPG) instantly in your browser.\
 Live demo → just run it locally in 10 seconds!
-### Features
+<img width="840" height="538" alt="image" src="https://github.com/user-attachments/assets/51248a2e-657e-4aad-bf0d-c2fe288c197e" />
 
+### Features
 - Drag & drop or click to upload (multiple files supported)
 - Instant conversion using Pillow + pillow-heif
 - Zero server storage – files are processed in memory and never saved
