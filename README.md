@@ -1,11 +1,13 @@
 # HEIC to JPG Converter – Instant Web App
+
 A beautiful, blazing-fast web tool that converts selected picture format(.HEIC / .HEIF) to desired picture format (.JPG) instantly in your browser.\
 Live demo → just run it locally in 10 seconds!
 <img width="840" height="538" alt="image" src="https://github.com/user-attachments/assets/51248a2e-657e-4aad-bf0d-c2fe288c197e" />
 
 ### Features
+
 - Drag & drop or click to upload (multiple files supported)
-- Instant conversion using Pillow + pillow-heif
+- Instant conversion using Pillow + pillow-heif + pillow-avif
 - Zero server storage – files are processed in memory and never saved
 - Responsive, mobile-friendly UI with Tailwind CSS
 - Progress bar + individual download buttons
@@ -13,12 +15,15 @@ Live demo → just run it locally in 10 seconds!
 - 95 % JPEG quality by default (customizable)
 
 ## 1. Clone or download this repo
+
 git clone https://github.com/Lequanghy/heic-to-jpg-web.git
 cd heic-to-jpg-web
 
 ## 2. Install dependencies
-pip install fastapi uvicorn pillow pillow-heif python-multipart
+
+pip install fastapi uvicorn pillow pillow-heif pillow-avif python-multipart
 
 ## 3. Run the app
+
 python main.py
 Open http://localhost:8000 in your browser — done!
