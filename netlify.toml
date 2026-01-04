@@ -1,0 +1,9 @@
+[build]
+  publish = "."         
+  command = ""          
+
+[[redirects]]
+  from = "/convert"
+  to = "https://your-backend-url.com/convert"  # ← Point to your backend
+  status = 200
+  force = true
